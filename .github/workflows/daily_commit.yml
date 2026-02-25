@@ -3,11 +3,13 @@ name: Daily Commit Workflow
 on:
   schedule:
     - cron: '15 1 * * *' # Runs at 01:15 UTC every day
-  workflow_dispatch: # Allows manual triggering
+  workflow_dispatch: 
 
 jobs:
   daily-commit:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -18,5 +20,5 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add heartbeat.txt
-          git commit -m "Daily automated heartbeat: $(date)"
+          git commit -m "Daily automated heartbeat: $(date)" || echo "No changes to commit"
           git push
