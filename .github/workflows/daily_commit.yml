@@ -1,0 +1,22 @@
+name: Daily Commit Workflow
+
+on:
+  schedule:
+    - cron: '15 1 * * *' # Runs at 01:15 UTC every day
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  daily-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Action for 24f2001614@ds.study.iitm.ac.in
+        run: |
+          echo "Automated heartbeat at $(date)" >> heartbeat.txt
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add heartbeat.txt
+          git commit -m "Daily automated heartbeat: $(date)"
+          git push
